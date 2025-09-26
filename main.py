@@ -1,5 +1,6 @@
 import os
 import shutil
+import json
 
 GAME_DIR_PATTERN = "game"
 
@@ -36,3 +37,11 @@ def copy_and_overwrite(source, dest):
     if os.path.exists(dest):
         shutil.rmtree(dest)
     shutil.copytree(source, dest)
+
+def make_json_metadat_file(path, game_dirs):
+    data= {
+        "gameNames": game_dirs,
+        "numberOfGames": len(game_dirs)
+    }
+    with open(path, "w") as f:
+        json.dump(data, f)
