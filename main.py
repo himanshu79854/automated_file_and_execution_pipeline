@@ -1,5 +1,5 @@
 import os
-
+import shutil
 
 GAME_DIR_PATTERN = "game"
 
@@ -25,3 +25,14 @@ def get_name_from_paths(paths, to_strip):
         new_names.append(new_dir_name)
 
     return new_names
+
+
+def create_dir(path):
+    if not os.path.exists(path):
+        os.mkdir(path)
+
+
+def copy_and_overwrite(source, dest):
+    if os.path.exists(dest):
+        shutil.rmtree(dest)
+    shutil.copytree(source, dest)
