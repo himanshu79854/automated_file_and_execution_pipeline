@@ -1,14 +1,12 @@
 import os
+import json
 import shutil
 from subprocess import PIPE, run
 import sys
-import json
 
 GAME_DIR_PATTERN = "game"
 GAME_CODE_EXTENSION = ".go"
 GAME_COMPILE_COMMAND = ["go", 'build']
-
-
 def find_all_game_paths(source):
     game_paths = []
 
@@ -36,6 +34,13 @@ def create_dir(path):
     if not os.path.exists(path):
         os.mkdir(path)
 
+
+def copy_and_overwrite(source, dest):
+    if os.path.exists(dest):
+        shutil.rmtree(dest)
+    shutil.copytree(source, dest)
+
+
 def make_json_metadat_file(path, game_dirs):
     data= {
         "gameNames": game_dirs,
@@ -43,12 +48,6 @@ def make_json_metadat_file(path, game_dirs):
     }
     with open(path, "w") as f:
         json.dump(data, f)
-
-
-def copy_and_overwrite(source, dest):
-    if os.path.exists(dest):
-        shutil.rmtree(dest)
-    shutil.copytree(source, dest)
 
 def compile_game_code(path):
     code_file_name = None
@@ -75,6 +74,7 @@ def run_command(command, path):
 
     os.chdir(cwd)
 
+    
 def main(source, target):
     cwd = os.getcwd()
     source_path = os.path.join(cwd, source)
@@ -100,3 +100,4 @@ if __name__ == "__main__":
     
     source, target = args[1:]
     main(source, target)
+    
